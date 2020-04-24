@@ -1,5 +1,7 @@
 package Model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,7 +12,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="contutilizator")
-public class ContUtilizator {
+public class ContUtilizator implements Serializable {
 	
 	@Id
 	private int id;

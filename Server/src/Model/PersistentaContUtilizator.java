@@ -14,13 +14,12 @@ public class PersistentaContUtilizator extends Persistenta {
 		super(x);		
 	}
 	
-	public Integer addContUtilizator(String user, String pass, Utilizator util) {
+	public Integer addContUtilizator(ContUtilizator cont) {
 		Session session = factory.openSession();
 		Transaction tx = null;
 		Integer contUtilizatorId = null;
 		try{
-			tx = session.beginTransaction();
-			ContUtilizator cont = new ContUtilizator(util,user,pass);
+			tx = session.beginTransaction();			
 			contUtilizatorId = (Integer) session.save(cont);
 			tx.commit();
 			
@@ -96,7 +95,7 @@ public class PersistentaContUtilizator extends Persistenta {
 		return null;
 	}
 	
-	public boolean checkValidityForLogIn(String user,String pass, String tip){
+	public boolean checkValidityForLogIn(ContUtilizator cont){
 		Session session = factory.openSession();
 		Transaction tx = null;
 		try {
@@ -105,8 +104,8 @@ public class PersistentaContUtilizator extends Persistenta {
 			List<ContUtilizator> conturi = session
 											.createQuery("from ContUtilizator")
 											.getResultList();
-			for(ContUtilizator cont : conturi) {
-				if(cont.getUtilizator().getTip().matches(tip) & cont.getUser().matches(user) & cont.getPass().matches(pass))
+			for(ContUtilizator contt : conturi) {
+				if(contt.getUtilizator().getTip().matches(cont.getUtilizator().getTip()) & contt.getUser().matches(cont.getUser()) & contt.getPass().matches(cont.getPass()))
 					return true;
 			}
 			

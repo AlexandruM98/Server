@@ -12,20 +12,19 @@ public class PersistentaEveniment extends Persistenta{
 		super(x);		
 	}
 	
-	public Integer addEveniment(String tip, String locatie, Date data, Integer persoane) {
+	public Integer addEveniment(Eveniment e) {
 		Session session = factory.openSession();
 		Transaction tx = null;
 		Integer evenimentId = null;
 		try {
-			tx = session.beginTransaction();
-			Eveniment eveniment = new Eveniment(tip,locatie,data,persoane);
-			evenimentId = (Integer)session.save(eveniment);
+			tx = session.beginTransaction();			
+			evenimentId = (Integer)session.save(e);
 			tx.commit();			
 		}
-		catch(HibernateException e) {
+		catch(HibernateException ee) {
 			if(tx!=null)
 				tx.rollback();
-			e.printStackTrace();
+			ee.printStackTrace();
 		}
 		return evenimentId;
 		
@@ -67,18 +66,18 @@ public class PersistentaEveniment extends Persistenta{
 		return true;
 	}
 	
-	public Integer updateEveniment(int id, String tip, String locatie, Date data, Integer persoane) {
+	public Integer updateEveniment(Eveniment event) {
 		Session session = factory.openSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
-			Eveniment eveniment = session.get(Eveniment.class, id);
-			eveniment.setTip(tip);
-			eveniment.setLocatie(locatie);
-			eveniment.setData(data);
-			eveniment.setPersoane(persoane);
+			Eveniment eveniment = session.get(Eveniment.class, event.getId());
+			eveniment.setTip(event.getTip());
+			eveniment.setLocatie(event.getLocatie());
+			eveniment.setData(event.getData());
+			eveniment.setPersoane(event.getPersoane());
 			tx.commit();
-			return id;
+			return event.getId() ;
 			
 		}
 		catch(HibernateException e) {
